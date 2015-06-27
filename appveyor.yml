@@ -1,0 +1,33 @@
+environment:
+  # AppVeyor API token for your account, project, version and artifact(s) to download
+  api_token:
+    secure: JzM3ABvKVujItxRGcbP0JaWZaNnNvtzN+vnt4qaZfBk=
+  deploy_project: simple-web
+  deploy_version: ''            # download artifacts from latest build if no version specified
+  deploy_artifact: ''           # download all artifacts if empty
+  
+  # deployment specific settings
+  # we are going to deploy using Web Deploy, so...
+  webdeploy_package: %appveyor_build_folder\MyWebApp.zip
+  webdeploy_server: https://ftp-test.scm.azurewebsites.net:443/msdeploy.axd?site=ftp-test
+  webdeploy_site: ftp-test
+  webdeploy_username: $ftp-test
+  webdeploy_password:
+    secure: rXrlAkNm0hNNQeUWN1bHWFKgqi5GLvQo0YJbithkG3/smINhmDF07ePn9I3FAbFeQotlOpT9jMA5b0/HiRAntA==
+
+# download project artifacts
+before_deploy:
+- iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/deploy.ps1'))
+
+# here is your own custom deployment code
+deploy_script:
+- "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="%webdeploy_package%" -dest:auto,ComputerName="%webdeploy_server%",UserName='%webdeploy_username%',Password='%webdeploy_password%',AuthType='Basic' -setParam:'IIS Web Application Name'='%webdeploy_site%' -allowUntrusted
+
+# add notifications
+#notifications:
+#  - provider: <provider_1>
+#    settings: ...
+
+# disable build and test pahses
+build: off
+test: off
