@@ -17,7 +17,7 @@ environment:
 
 # download project artifacts
 before_deploy:
-- iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/deploy.ps1'))
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/deploy.ps1'))
 
 # here is your own custom deployment code
 deploy_script:
