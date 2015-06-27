@@ -8,7 +8,7 @@ environment:
   
   # deployment specific settings
   # we are going to deploy using Web Deploy, so...
-  webdeploy_package: %appveyor_build_folder\MyWebApp.zip
+  webdeploy_package: '%appveyor_build_folder%\MyWebApp.zip'
   webdeploy_server: https://ftp-test.scm.azurewebsites.net:443/msdeploy.axd?site=ftp-test
   webdeploy_site: ftp-test
   webdeploy_username: $ftp-test
